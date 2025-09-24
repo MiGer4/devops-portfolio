@@ -32,9 +32,15 @@
 8. **Security**
 ---
 
+## Посилання на проєкт
+[https://github.com/users/MiGer4/projects/1]
 
-## 📬 Контакти
-- 📧 Email: [mykhailo.hordei.w@gmail.com] 
+## Скріншот бота
+<img width="697" height="401" alt="image" src="https://github.com/user-attachments/assets/9fa19b3f-c9c0-4f17-918e-67aecd0e3275" />
+
 ---
 
+## 📬 Контакти
+- 📧 Email: [mykhailo.hordei.w@gmail.com]
+  
 ⭐️ Дякую, що завітали до мого профілю! Буду радий новим контактам та співпраці.
