@@ -1,0 +1,9 @@
+[
+    {
+        "endpoint": "http:/localhost:8000",
+        "status_code": "ERROR",
+        "response_time": null,
+        "timestamp": "2025-10-01 10:33:20",
+        "error": "Invalid URL 'http:/localhost:8000': No host supplied"
+    }
+]
