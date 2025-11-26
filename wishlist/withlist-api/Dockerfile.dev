@@ -1,0 +1,43 @@
+FROM python:3.11-slim AS builder
+
+# Встановлюємо інструменти для збірки (якщо потрібні)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc libc-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /install
+
+# Копіюємо лише файл залежностей, щоб використовувати Docker-кеш
+COPY requirements.txt .
+
+# Встановлюємо пакети у тимчасову директорію /install
+RUN pip install --no-cache-dir --prefix=/usr/local -r requirements.txt
+
+# --- ЕТАП 2: Final (Створення оптимізованого образу) ---
+FROM python:3.11-slim
+
+# Копіюємо встановлені пакети з етапу Builder
+COPY --from=builder /usr/local /usr/local
+
+WORKDIR /app
+
+# Копіюємо код програми (буде оновлюватися через volume mount у docker-compose)
+COPY . .
+
+# --- Створення non-root користувача для безпеки ---
+RUN groupadd --gid 1000 appuser && \
+    useradd --uid 1000 --gid appuser --shell /bin/sh --create-home appuser
+
+# Зміна власника робочої директорії
+RUN chown -R appuser:appuser /app
+USER appuser
+
+# Порт для FastAPI
+EXPOSE 8000
+
+# Healthcheck: Перевірка, чи API відповідає, перед тим як запускати інші сервіси
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+    CMD curl --fail http://localhost:8000/health || exit 1
+
+# Команда для розробки з перезавантаженням
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
